@@ -1,2 +1,5 @@
 # Ignore compiled source
 *.pyc
+
+# Ignore Secret Configuration
+secret.py
