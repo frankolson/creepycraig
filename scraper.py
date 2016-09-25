@@ -3,13 +3,44 @@
 #
 from slackclient import SlackClient
 from craigslist import CraigslistHousing
-import settings
 from util import in_box, in_hood,coord_distance,post_to_slack
+import settings
 
-# Setup Slack client
+from sqlalchemy import Column, Integer, String, DateTime, Float, Boolean
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy.ext.declarative import declarative_base
+
+## setup SQLite
+engine = create_engine('sqlite:///listings.db', echo=False)
+Base = declarative_base()
+
+## Listing DB Model
+class Listing(Base):
+    __tablename__ = 'listings'
+
+    id        = Column(Integer, primary_key=True)
+    area      = Column(String)
+    bart_stop = Column(String)
+    cl_id     = Column(Integer, unique=True)
+    created   = Column(DateTime)
+    geotag    = Column(String)
+    latitutde = Column(Float)
+    link      = Column(String, unique=True)
+    location  = Column(String)
+    longitude = Column(Float)
+    name      = Column(String)
+    price     = Column(Float)
+
+Base.metadata.create_all(engine)
+Session = sessionmaker(bind=engine)
+session = Session()
+
+## Setup Slack client
 slack_client = SlackClient(settings.SLACK_TOKEN)
 
-for area in settings.AREAS:
+## Scrape a particular area
+def scrape_area(area):
     cl = CraigslistHousing( site=settings.SITE, area=area, category='apa',
                             filters={
                                 'max_price': settings.MAX_PRICE,
@@ -65,3 +96,7 @@ for area in settings.AREAS:
 
             # post to slack
             post_to_slack(slack_client, listing)
+
+def scrape_craigslist():
+    for area in settings.AREAS:
+        scrape_area(area)
