@@ -62,6 +62,8 @@ NEIGHBORHOODS = [
 ]
 
 ## Transit
+MAX_TRANSIT_DIST = 2.0 # miles
+
 BART_STATIONS = {
     "12th Street Oakland City Center": [37.8036850,-122.2753400],
     "16th Street Mission": [37.7647994,-122.4199957],
@@ -77,7 +79,7 @@ BART_STATIONS = {
     "Colma": [37.6846380,-122.4662329],
     "Concord": [37.9743593,-122.0291856],
     "Daly City": [37.7063632,-122.4692604],
-    "Dublin / Pleasanton" [37.7016504,-121.8991813]:,
+    "Dublin / Pleasanton": [37.7016504,-121.8991813],
     "El Cerrito del Norte": [37.9251091,-122.3168014],
     "El Cerrito Plaza": [37.9026314,-122.2989344],
     "Embarcadero": [37.7929053,-122.3970590],
