@@ -4,7 +4,7 @@
 
 from craigslist import CraigslistHousing
 import settings
-import util
+from util import in_box, in_hood
 
 for area in settings.AREAS:
     cl = CraigslistHousing( site=settings.SITE, area=area, category='apa',
@@ -16,8 +16,17 @@ for area in settings.AREAS:
     results = cl.get_results(sort_by='newest', geotagged=True, limit=20)
 
     for result in results:
-        geotag = result["geotag"]
-        if geotag != None:
+        geotag   = result["geotag"]
+        location = result["where"]
+        area     = ""
+
+        if geotag is not None:
             for a, coords in settings.BOXES.items():
-                if util.in_box(geotag, coords):
-                    print a + "("+ result["price"] +"): " + result["name"]
+                if in_box(geotag, coords):
+                    area = a
+
+        if len(area) == 0:
+            area = in_hood(location, settings.NEIGHBORHOODS)
+
+        if len(area) != 0:
+            print area + "("+ result["price"] +"): " + result["name"]
