@@ -1,5 +1,8 @@
 # Ignore compiled source
 *.pyc
 
+# Ignore db files
+*.db
+
 # Ignore Secret Configuration
 secret.py

@@ -113,4 +113,5 @@ BART_STATIONS = {
 }
 
 ## System Settings
-SLACK_CHANNEL = "#hoodhunting"
+SLACK_CHANNEL  = "#hoodhunting"
+SLEEP_INTERVAL = 20 * 60 # 20 minutes

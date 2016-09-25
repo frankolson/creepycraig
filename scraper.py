@@ -36,11 +36,8 @@ Base.metadata.create_all(engine)
 Session = sessionmaker(bind=engine)
 session = Session()
 
-## Setup Slack client
-slack_client = SlackClient(settings.SLACK_TOKEN)
-
 ## Scrape a particular area
-def scrape_area(area):
+def scrape_area(area, slack_client):
     cl = CraigslistHousing( site=settings.SITE, area=area, category='apa',
                             filters={
                                 'max_price': settings.MAX_PRICE,
@@ -98,5 +95,9 @@ def scrape_area(area):
             post_to_slack(slack_client, listing)
 
 def scrape_craigslist():
+    # Setup Slack client
+    slack_client = SlackClient(settings.SLACK_TOKEN)
+
+    # loop over all selected craigslist areas
     for area in settings.AREAS:
-        scrape_area(area)
+        scrape_area(area, slack_client)
