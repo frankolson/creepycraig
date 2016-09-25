@@ -1,10 +1,13 @@
 #
 # File for the main scraper
 #
-
+from slackclient import SlackClient
 from craigslist import CraigslistHousing
 import settings
-from util import in_box, in_hood,coord_distance
+from util import in_box, in_hood,coord_distance,post_to_slack
+
+# Setup Slack client
+slack_client = SlackClient(settings.SLACK_TOKEN)
 
 for area in settings.AREAS:
     cl = CraigslistHousing( site=settings.SITE, area=area, category='apa',
@@ -48,10 +51,17 @@ for area in settings.AREAS:
                 if (min_dist is None or dist < min_dist):
                     min_dist = dist
                     bart_dist = dist
+            listing = {
+                # Neighborhood variables
+                "area": area,
+                "link": result["url"],
+                "name": result["name"],
+                "price": result["price"],
+                # Transit variables
+                "near_bart": near_bart,
+                "bart_dist": bart_dist,
+                "bart": bart
+            }
 
-            # bart distance
-            if near_bart:
-                station_msg = " [Near Bart ~ %s ~ %.2fmi]" % (bart, bart_dist)
-
-            print area + "(%s)%s:\n%s" % (result["price"], station_msg, result["name"])
-            print "%s,%s\n" % (geotag)
+            # post to slack
+            post_to_slack(slack_client, listing)

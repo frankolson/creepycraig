@@ -1,7 +1,7 @@
 #
 # File to store or the variables that may to need be changed frequently
 #
-
+from secret import *
 
 ## Price
 MAX_PRICE = 3500
@@ -113,3 +113,4 @@ BART_STATIONS = {
 }
 
 ## System Settings
+SLACK_CHANNEL = "#hoodhunting"
