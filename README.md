@@ -24,3 +24,9 @@ based on the [this tutorial](https://www.dataquest.io/blog/apartment-finding-sla
   * System:
     * `SLACK_CHANNEL`
 4. scraper.py ~ the clever one doing the searching
+
+### Dependencies
+
+* `sqlalchemy`
+* `python-craigslist`
+* `slackclient`
