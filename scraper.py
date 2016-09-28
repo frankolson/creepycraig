@@ -36,9 +36,6 @@ class Listing(Base):
     near_bart = Column(Boolean)
     price     = Column(Float)
 
-    def __getitem__(self, key):
-        return self[key]
-
 Base.metadata.create_all(engine)
 Session = sessionmaker(bind=engine)
 session = Session()
