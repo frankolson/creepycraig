@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 from scraper import scrape_craigslist
 import settings
 import time

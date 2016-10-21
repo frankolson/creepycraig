@@ -4,7 +4,7 @@
 from secret import *
 
 ## Price
-MAX_PRICE = 3500
+MAX_PRICE = 3000
 MIN_PRICE = 500
 
 ## Location

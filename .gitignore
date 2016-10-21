@@ -6,3 +6,6 @@
 
 # Ignore Secret Configuration
 secret.py
+
+#Ignore nohup
+nohup.out
