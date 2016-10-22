@@ -4,7 +4,7 @@
 from secret import *
 
 ## Price
-MAX_PRICE = 3000
+MAX_PRICE = 2500
 MIN_PRICE = 500
 
 ## Location
@@ -114,4 +114,4 @@ BART_STATIONS = {
 
 ## System Settings
 SLACK_CHANNEL  = "#hoodhunting"
-SLEEP_INTERVAL = 1 * 60 # 20 minutes
+SLEEP_INTERVAL = 20 * 60
