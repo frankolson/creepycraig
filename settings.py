@@ -3,9 +3,10 @@
 #
 from secret import *
 
-## Price
+## APARTMENT PREFERENCES
 MAX_PRICE = 2500
 MIN_PRICE = 500
+BEDROOMS  = 2
 
 ## Location
 SITE = 'sfbay'

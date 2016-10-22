@@ -45,7 +45,8 @@ def scrape_area(area, slack_client):
     cl = CraigslistHousing( site=settings.SITE, area=area, category='apa',
                             filters={
                                 'max_price': settings.MAX_PRICE,
-                                'min_price': settings.MIN_PRICE
+                                'min_price': settings.MIN_PRICE,
+                                'bedrooms' : settings.BEDROOMS
                             })
 
     results = cl.get_results(sort_by='newest', geotagged=True, limit=20)
