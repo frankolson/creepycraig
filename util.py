@@ -29,7 +29,7 @@ def in_hood(location, neighborhoods):
     return ""
 
 # post to slack
-def post_to_slack(slack_client, listing):
+def post_to_slack(slack_client, listing, rooms):
     # Neighborhood variables
     area  = listing.area
     price = listing.price
@@ -44,7 +44,7 @@ def post_to_slack(slack_client, listing):
 
     if near_bart:
         station_msg = " | Near Bart (%s) ~ %.2fmi]" % (bart, bart_dist)
-    post = "*%s* | %s%s | %s | %s" % (area, price, station_msg, name, link)
+    post = "*%s (%s rooms)* | %s%s | %s | %s" % (area, rooms, price, station_msg, name, link)
 
     slack_client.api_call(
         "chat.postMessage", channel=settings.SLACK_CHANNEL, text=post,

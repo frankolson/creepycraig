@@ -41,12 +41,12 @@ Session = sessionmaker(bind=engine)
 session = Session()
 
 ## Scrape a particular area
-def scrape_area(area, slack_client):
+def scrape_area(area, rooms, ceiling, slack_client):
     cl = CraigslistHousing( site=settings.SITE, area=area, category='apa',
                             filters={
-                                'max_price': settings.MAX_PRICE,
+                                'max_price': ceiling,
                                 'min_price': settings.MIN_PRICE,
-                                'bedrooms' : settings.BEDROOMS
+                                'bedrooms' : rooms
                             })
 
     results = cl.get_results(sort_by='newest', geotagged=True, limit=20)
@@ -118,7 +118,7 @@ def scrape_area(area, slack_client):
                 session.commit()
 
                 # post to slack
-                post_to_slack(slack_client, listing)
+                post_to_slack(slack_client, listing, rooms)
 
 def scrape_craigslist():
     # Setup Slack client
@@ -126,4 +126,5 @@ def scrape_craigslist():
 
     # loop over all selected craigslist areas
     for area in settings.AREAS:
-        scrape_area(area, slack_client)
+        for rooms, ceiling in settings.CEILINGS.iteritems():
+            scrape_area(area, rooms, ceiling, slack_client)
