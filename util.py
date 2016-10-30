@@ -29,7 +29,7 @@ def in_hood(location, neighborhoods):
     return ""
 
 # post to slack
-def post_to_slack(slack_client, apartment_listing, rooms):
+def post_apartment_to_slack(slack_client, apartment_listing, rooms):
     # Neighborhood variables
     area  = apartment_listing.area
     price = apartment_listing.price
@@ -49,4 +49,18 @@ def post_to_slack(slack_client, apartment_listing, rooms):
     slack_client.api_call(
         "chat.postMessage", channel=apartment_settings.SLACK_CHANNEL, text=post,
         username='hoodlum', icon_emoji=':robot_face:'
+    )
+
+def post_car_to_slack(slack_client, car_listing):
+    # Car Variables
+    area  = car_listing.area
+    price = car_listing.price
+    name  = car_listing.name
+    link  = car_listing.link
+
+    post = "*%s* | %s | %s | %s" % (area, price, name, link)
+
+    slack_client.api_call(
+        "chat.postMessage", channel=car_settings.SLACK_CHANNEL, text=post,
+        username='rider', icon_emoji=':robot_face:'
     )

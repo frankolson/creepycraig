@@ -9,6 +9,7 @@ import Settings.apartments as apartment_settings
 
 from dateutil.parser import parse
 import time
+import sys
 
 
 ## Scrape a particular for cars
@@ -124,13 +125,22 @@ def scrape_living_area(area, rooms, ceiling, slack_client):
                 apartment_session.commit()
 
                 # post to slack
-                post_to_slack(slack_client, apartment_listing, rooms)
+                post_apartment_to_slack(slack_client, apartment_listing, rooms)
 
-def scrape_craigslist():
+def scrape_craigslist(search_type):
     # Setup Slack client
     slack_client = SlackClient(apartment_settings.SLACK_TOKEN)
 
-    # loop over all selected craigslist areas
-    for area in apartment_settings.AREAS:
-        for rooms, ceiling in apartment_settings.CEILINGS.iteritems():
-            scrape_living_area(area, rooms, ceiling, slack_client)
+    if search_type == "hoodlum":
+        # loop over all selected craigslist areas
+        for area in apartment_settings.AREAS:
+            for rooms, ceiling in apartment_settings.CEILINGS.iteritems():
+                scrape_living_area(area, rooms, ceiling, slack_client)
+    else if search_type == "rider":
+        # loop over all selected craigslist areas
+        for area in car_settings.AREAS:
+            scrape_car_area(area, slack_client)
+    else
+        print "\nImpropper Scrape type. Please use either 'hoodlum' or 'rider'. "
+        print "Exiting...."
+        sys.exit(1)
