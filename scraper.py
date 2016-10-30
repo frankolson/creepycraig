@@ -11,8 +11,17 @@ from dateutil.parser import parse
 import time
 
 
-## Scrape a particular area
-def scrape_living(area, rooms, ceiling, slack_client):
+## Scrape a particular for cars
+def scrape_car_area(area, slack_client):
+    cl = CraigslistForSale( site=car_settings.SITE, area=area, category='cto',
+                            filters={
+                                'max_price': car_settings.MAX_PRICE,
+                                'min_price': car_settings.MIN_PRICE,
+                                'max_miles': car_settings.MAX_MILES
+                            })
+
+## Scrape a particular area for places to live
+def scrape_living_area(area, rooms, ceiling, slack_client):
     cl = CraigslistHousing( site=apartment_settings.SITE, area=area, category='apa',
                             filters={
                                 'max_price': ceiling,
@@ -98,4 +107,4 @@ def scrape_craigslist():
     # loop over all selected craigslist areas
     for area in apartment_settings.AREAS:
         for rooms, ceiling in apartment_settings.CEILINGS.iteritems():
-            scrape_living(area, rooms, ceiling, slack_client)
+            scrape_living_area(area, rooms, ceiling, slack_client)
