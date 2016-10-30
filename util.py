@@ -2,7 +2,7 @@
 # File to store functions related to filtering
 #
 from math import radians, cos, sin, asin, sqrt
-import settings
+import Settings.apartments as apartment_settings
 
 def coord_distance(p1, p2):
     p1_lat, p1_lon, p2_lat, p2_lon = map(radians, [p1[0], p1[1], p2[0], p2[1]])
@@ -47,6 +47,6 @@ def post_to_slack(slack_client, apartment_listing, rooms):
     post = "*%s (%s rooms)* | %s%s | %s | %s" % (area, rooms, price, station_msg, name, link)
 
     slack_client.api_call(
-        "chat.postMessage", channel=settings.SLACK_CHANNEL, text=post,
+        "chat.postMessage", channel=apartment_settings.SLACK_CHANNEL, text=post,
         username='hoodlum', icon_emoji=':robot_face:'
     )

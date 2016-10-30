@@ -5,7 +5,7 @@ from slackclient import SlackClient
 from craigslist import CraigslistHousing
 from util import in_box, in_hood,coord_distance,post_to_slack
 from databases import ApartmentListing, CarListing, apartment_session, car_session
-import settings
+import Settings.apartments as apartment_settings
 
 from dateutil.parser import parse
 import time
@@ -13,10 +13,10 @@ import time
 
 ## Scrape a particular area
 def scrape_living(area, rooms, ceiling, slack_client):
-    cl = CraigslistHousing( site=settings.SITE, area=area, category='apa',
+    cl = CraigslistHousing( site=apartment_settings.SITE, area=area, category='apa',
                             filters={
                                 'max_price': ceiling,
-                                'min_price': settings.MIN_PRICE,
+                                'min_price': apartment_settings.MIN_PRICE,
                                 'bedrooms' : rooms
                             })
 
@@ -42,18 +42,18 @@ def scrape_living(area, rooms, ceiling, slack_client):
 
             # Neighborhood check
             if geotag is not None:
-                for a, coords in settings.BOXES.items():
+                for a, coords in apartment_settings.BOXES.items():
                     if in_box(geotag, coords):
                         area = a
 
             if (len(area) == 0) and (location is not None):
-                area = in_hood(location, settings.NEIGHBORHOODS)
+                area = in_hood(location, apartment_settings.NEIGHBORHOODS)
 
             if (len(area) != 0) and (geotag is not None):
                 # Transit check
-                for station, coords in settings.BART_STATIONS.items():
+                for station, coords in apartment_settings.BART_STATIONS.items():
                     dist = coord_distance(coords, geotag)
-                    if (min_dist is None or dist < min_dist) and dist < settings.MAX_TRANSIT_DIST:
+                    if (min_dist is None or dist < min_dist) and dist < apartment_settings.MAX_TRANSIT_DIST:
                         bart = station
                         near_bart = True
 
@@ -93,9 +93,9 @@ def scrape_living(area, rooms, ceiling, slack_client):
 
 def scrape_craigslist():
     # Setup Slack client
-    slack_client = SlackClient(settings.SLACK_TOKEN)
+    slack_client = SlackClient(apartment_settings.SLACK_TOKEN)
 
     # loop over all selected craigslist areas
-    for area in settings.AREAS:
-        for rooms, ceiling in settings.CEILINGS.iteritems():
+    for area in apartment_settings.AREAS:
+        for rooms, ceiling in apartment_settings.CEILINGS.iteritems():
             scrape_living(area, rooms, ceiling, slack_client)

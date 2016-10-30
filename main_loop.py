@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 from scraper import scrape_craigslist
-import settings
+import Settings.apartments as apartment_settings
+
 import time
 import sys
 import traceback
@@ -22,7 +23,7 @@ if __name__ == "__main__":
 
         # Sleep time
         try:
-            time.sleep(settings.SLEEP_INTERVAL)
+            time.sleep(apartment_settings.SLEEP_INTERVAL)
         except KeyboardInterrupt:
             print "Exiting...."
             sys.exit(1)
