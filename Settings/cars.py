@@ -7,6 +7,7 @@ from secret import *
 MAX_PRICE = 2000
 MIN_PRICE = 50
 MAX_MILES = 100000
+QUERY     = "SUV | truck"
 
 
 ## LOCATION

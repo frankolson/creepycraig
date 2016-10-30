@@ -17,6 +17,7 @@ import sys
 def scrape_car_area(area, slack_client):
     cl = CraigslistForSale( site=car_settings.SITE, area=area, category='cto',
                             filters={
+                                'query':     car_settings.QUERY,
                                 'max_price': car_settings.MAX_PRICE,
                                 'min_price': car_settings.MIN_PRICE,
                                 'max_miles': car_settings.MAX_MILES
