@@ -19,6 +19,32 @@ def scrape_car_area(area, slack_client):
                                 'min_price': car_settings.MIN_PRICE,
                                 'max_miles': car_settings.MAX_MILES
                             })
+    results = cl.get_results(sort_by='newest', limit=20)
+
+    for result in results:
+        # check if the result is already in the db
+        car_listing = car_session.query(CarListing).filter_by(cl_id=result["id"]).first()
+
+        # Don't store the apartment_listing if it already exists.
+        if car_listing is None:
+            # Create the apartment_listing object
+            car_listing = ApartmentListing(
+                area      = area,
+                cl_id     = int(result["id"]),
+                created   = parse(result["datetime"]),
+                link      = result["url"],
+                location  = location,
+                name      = result["name"],
+                price     = price
+            )
+
+            # save apartment_listing to db
+            car_session.add(car_listing)
+            car_session.commit()
+
+            # post to slack
+            post_car_to_slack(slack_client, car_listing)
+
 
 ## Scrape a particular area for places to live
 def scrape_living_area(area, rooms, ceiling, slack_client):
