@@ -3,6 +3,7 @@
 #
 from math import radians, cos, sin, asin, sqrt
 import Settings.apartments as apartment_settings
+import Settings.cars as car_settings
 
 def coord_distance(p1, p2):
     p1_lat, p1_lon, p2_lat, p2_lon = map(radians, [p1[0], p1[1], p2[0], p2[1]])

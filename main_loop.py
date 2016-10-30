@@ -11,7 +11,7 @@ if __name__ == "__main__":
         # scrape time
         print "%s: Starting scrape cycle" % time.ctime()
         try:
-            scrape_craigslist()
+            scrape_craigslist(sys.argv[1])
         except KeyboardInterrupt:
             print "Exiting...."
             sys.exit(1)

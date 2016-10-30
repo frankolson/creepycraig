@@ -2,10 +2,11 @@
 # File for the main scraper
 #
 from slackclient import SlackClient
-from craigslist import CraigslistHousing
-from util import in_box, in_hood,coord_distance,post_to_slack
+from craigslist import CraigslistHousing, CraigslistForSale
+from util import in_box, in_hood, coord_distance, post_apartment_to_slack, post_car_to_slack
 from databases import ApartmentListing, CarListing, apartment_session, car_session
 import Settings.apartments as apartment_settings
+import Settings.cars as car_settings
 
 from dateutil.parser import parse
 import time
@@ -34,9 +35,9 @@ def scrape_car_area(area, slack_client):
                 cl_id     = int(result["id"]),
                 created   = parse(result["datetime"]),
                 link      = result["url"],
-                location  = location,
+                location  = result["where"],
                 name      = result["name"],
-                price     = price
+                price     = float(result["price"].replace("$", ""))
             )
 
             # save apartment_listing to db
@@ -136,11 +137,11 @@ def scrape_craigslist(search_type):
         for area in apartment_settings.AREAS:
             for rooms, ceiling in apartment_settings.CEILINGS.iteritems():
                 scrape_living_area(area, rooms, ceiling, slack_client)
-    else if search_type == "rider":
+    elif search_type == "rider":
         # loop over all selected craigslist areas
         for area in car_settings.AREAS:
             scrape_car_area(area, slack_client)
-    else
+    else:
         print "\nImpropper Scrape type. Please use either 'hoodlum' or 'rider'. "
         print "Exiting...."
         sys.exit(1)
