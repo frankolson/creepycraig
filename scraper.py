@@ -4,7 +4,7 @@
 from slackclient import SlackClient
 from craigslist import CraigslistHousing
 from util import in_box, in_hood,coord_distance,post_to_slack
-from databases import ApartmentListing, apartment_session
+from databases import ApartmentListing, CarListing, apartment_session, car_session
 import settings
 
 from dateutil.parser import parse
