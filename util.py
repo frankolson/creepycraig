@@ -29,17 +29,17 @@ def in_hood(location, neighborhoods):
     return ""
 
 # post to slack
-def post_to_slack(slack_client, listing, rooms):
+def post_to_slack(slack_client, apartment_listing, rooms):
     # Neighborhood variables
-    area  = listing.area
-    price = listing.price
-    name  = listing.name
-    link  = listing.link
+    area  = apartment_listing.area
+    price = apartment_listing.price
+    name  = apartment_listing.name
+    link  = apartment_listing.link
 
     # Transit variables
-    near_bart   = listing.near_bart
-    bart_dist   = listing.bart_dist
-    bart        = listing.bart_stop
+    near_bart   = apartment_listing.near_bart
+    bart_dist   = apartment_listing.bart_dist
+    bart        = apartment_listing.bart_stop
     station_msg = ""
 
     if near_bart:

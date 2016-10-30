@@ -4,44 +4,15 @@
 from slackclient import SlackClient
 from craigslist import CraigslistHousing
 from util import in_box, in_hood,coord_distance,post_to_slack
+from databases import ApartmentListing, apartment_session
 import settings
-
-from sqlalchemy import Column, Integer, String, DateTime, Float, Boolean
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.ext.declarative import declarative_base
 
 from dateutil.parser import parse
 import time
 
-## setup SQLite
-engine = create_engine('sqlite:///listings.db', echo=False)
-Base = declarative_base()
-
-## Listing DB Model
-class Listing(Base):
-    __tablename__ = 'listings'
-
-    id        = Column(Integer, primary_key=True)
-    area      = Column(String)
-    bart_dist = Column(Float)
-    bart_stop = Column(String)
-    cl_id     = Column(Integer, unique=True)
-    created   = Column(DateTime)
-    latitutde = Column(Float)
-    link      = Column(String, unique=True)
-    location  = Column(String)
-    longitude = Column(Float)
-    name      = Column(String)
-    near_bart = Column(Boolean)
-    price     = Column(Float)
-
-Base.metadata.create_all(engine)
-Session = sessionmaker(bind=engine)
-session = Session()
 
 ## Scrape a particular area
-def scrape_area(area, rooms, ceiling, slack_client):
+def scrape_living(area, rooms, ceiling, slack_client):
     cl = CraigslistHousing( site=settings.SITE, area=area, category='apa',
                             filters={
                                 'max_price': ceiling,
@@ -53,10 +24,10 @@ def scrape_area(area, rooms, ceiling, slack_client):
 
     for result in results:
         # check if the result is already in the db
-        listing = session.query(Listing).filter_by(cl_id=result["id"]).first()
+        apartment_listing = apartment_session.query(ApartmentListing).filter_by(cl_id=result["id"]).first()
 
-        # Don't store the listing if it already exists.
-        if listing is None:
+        # Don't store the apartment_listing if it already exists.
+        if apartment_listing is None:
             # Neighborhood variables
             geotag   = result["geotag"]
             location = result["where"]
@@ -97,8 +68,8 @@ def scrape_area(area, rooms, ceiling, slack_client):
                 except Exception:
                     pass
 
-                # Create the listing object
-                listing = Listing(
+                # Create the apartment_listing object
+                apartment_listing = ApartmentListing(
                     area      = area,
                     bart_dist = bart_dist,
                     bart_stop = bart,
@@ -113,12 +84,12 @@ def scrape_area(area, rooms, ceiling, slack_client):
                     price     = price
                 )
 
-                # save listing to db
-                session.add(listing)
-                session.commit()
+                # save apartment_listing to db
+                apartment_session.add(apartment_listing)
+                apartment_session.commit()
 
                 # post to slack
-                post_to_slack(slack_client, listing, rooms)
+                post_to_slack(slack_client, apartment_listing, rooms)
 
 def scrape_craigslist():
     # Setup Slack client
@@ -127,4 +98,4 @@ def scrape_craigslist():
     # loop over all selected craigslist areas
     for area in settings.AREAS:
         for rooms, ceiling in settings.CEILINGS.iteritems():
-            scrape_area(area, rooms, ceiling, slack_client)
+            scrape_living(area, rooms, ceiling, slack_client)
