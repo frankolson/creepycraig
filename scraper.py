@@ -138,12 +138,12 @@ def scrape_craigslist(search_type):
         # loop over all selected craigslist areas
         for area in apartment_settings.AREAS:
             for rooms, ceiling in apartment_settings.CEILINGS.iteritems():
-                time.sleep randint(15,35)
+                time.sleep(randint(15,35))
                 scrape_living_area(area, rooms, ceiling, slack_client)
     elif search_type == "rider":
         # loop over all selected craigslist areas
         for area in car_settings.AREAS:
-            time.sleep randint(15,35)
+            time.sleep(randint(15,35))
             scrape_car_area(area, slack_client)
     else:
         print "\nImpropper Scrape type. Please use either 'hoodlum' or 'rider'. "
