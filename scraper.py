@@ -81,7 +81,7 @@ def scrape_living_area(area, rooms, ceiling, slack_client):
 
             # Neighborhood check
             if geotag is not None:
-                for a, coords in apartment_settings.BOXES.items():
+                for a, coords in apartment_settings.AREAS[area].items():
                     if in_box(geotag, coords):
                         area = a
 
@@ -136,7 +136,7 @@ def scrape_craigslist(search_type):
 
     if search_type == "hoodlum":
         # loop over all selected craigslist areas
-        for area in apartment_settings.AREAS:
+        for area, boxes in apartment_settings.AREAS:
             for rooms, ceiling in apartment_settings.CEILINGS.iteritems():
                 time.sleep(randint(15,35))
                 scrape_living_area(area, rooms, ceiling, slack_client)
