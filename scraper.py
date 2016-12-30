@@ -51,8 +51,8 @@ def scrape_car_area(area, slack_client):
 
 
 ## Scrape a particular area for places to live
-def scrape_living_area(area, rooms, ceiling, slack_client):
-    cl = CraigslistHousing( site=apartment_settings.SITE, area=area, category='apa',
+def scrape_living_area(scrape_area, rooms, ceiling, slack_client):
+    cl = CraigslistHousing( site=apartment_settings.SITE, area=scrape_area, category='apa',
                             filters={
                                 'max_price': ceiling,
                                 'min_price': apartment_settings.MIN_PRICE,
@@ -81,7 +81,7 @@ def scrape_living_area(area, rooms, ceiling, slack_client):
 
             # Neighborhood check
             if geotag is not None:
-                for a, coords in apartment_settings.AREAS[area].items():
+                for a, coords in apartment_settings.AREAS[scrape_area].items():
                     if in_box(geotag, coords):
                         area = a
 
@@ -136,7 +136,7 @@ def scrape_craigslist(search_type):
 
     if search_type == "hoodlum":
         # loop over all selected craigslist areas
-        for area, boxes in apartment_settings.AREAS:
+        for area, boxes in apartment_settings.AREAS.iteritems():
             for rooms, ceiling in apartment_settings.CEILINGS.iteritems():
                 time.sleep(randint(15,35))
                 scrape_living_area(area, rooms, ceiling, slack_client)

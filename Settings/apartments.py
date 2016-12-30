@@ -9,27 +9,27 @@ MIN_PRICE = 500
 
 CEILINGS = {
     # two rooms
-    "2" : 1950,
+    "2" : 1850,
     # three rooms
-    "3" : 2700
+    # "3" : 2700
 }
 
 ## Location
 SITE = 'sfbay'
 AREAS = {
-    "eby": [
+    "eby": {
         # Berkeley
         "berkeley": [
             [37.846226, -122.234179],
             [37.905668, -122.327065]
         ],
         # Castro Valley
-        "castro_valley": [
+        "castro valley": [
             [37.678831, -122.002371],
             [37.752628, -122.130875]
         ],
         # Oakland
-        "adams_point": [
+        "adams point": [
             [37.808027, -122.2493801],
             [37.817327, -122.2615801],
         ],
@@ -37,20 +37,20 @@ AREAS = {
                 [37.83152, -122.241879],
                 [37.852126, -122.25788],
             ],
-    ],
-    "pen": [
+    },
+    "pen": {
         # Mountain View
-        "mountain_view": [
+        "mountain view": [
             [37.35676, -122.044672],
             [37.450879, -122.117862]
         ],
         # Palo Alto
-        "palo_alto": [
+        "palo alto": [
             [37.285346, -122.086779],
             [37.465541, -122.202476]
         ]
-    ],
-    "sfc": [
+    },
+    "sfc": {
         # San Francisco
         "presidio": [
             [37.786864, -122.446231],
@@ -60,7 +60,7 @@ AREAS = {
             [37.765931, -122.381456],
             [37.7957, -122.42338]
         ]
-    ]
+    }
 }
 NEIGHBORHOODS = [
     "berkeley",
@@ -125,5 +125,5 @@ BART_STATIONS = {
 }
 
 ## System Settings
-SLACK_CHANNEL  = "@will"
+SLACK_CHANNEL  = "#hoodhunting"
 SLEEP_INTERVAL = 20 * 60

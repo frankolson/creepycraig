@@ -44,3 +44,4 @@ based on the [this tutorial](https://www.dataquest.io/blog/apartment-finding-sla
 * `sqlalchemy`
 * `python-craigslist`
 * `slackclient`
+* `python-dateutil`
